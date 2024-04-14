@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,10 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Récupérer tous les utilisateurs avec leurs rôles et les permissions associées
+        // Retrieve all users with their roles and associated permissions
         $users = User::with('roles.permissions')->get();
 
-        // Passer les données à la vue
+        // Pass the data to the view
         return view('users.index', compact('users'));
     }
 
@@ -25,10 +26,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        // Récupérez le rôle par défaut, par exemple en le récupérant depuis la base de données
-        $defaultRole = Role::where('name', 'default_role')->first(); // Adapté à votre cas d'utilisation
+        // Retrieve the default role, for example by fetching it from the database
+        $defaultRole = Role::where('name', 'default_role')->first(); // Adapted to your use case
 
-        // Passer la variable $defaultRole à la vue
+        // Pass the $defaultRole variable to the view
         return view('users.create', ['defaultRole' => $defaultRole]);
     }
 
@@ -46,18 +47,18 @@ class UserController extends Controller
             'password' => 'required|string|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]+$/',
         ]);
 
-        // Créer un nouvel utilisateur
+        // Create a new user
         $user = User::create([
-            'nom' => $request->input('name'),
+            'nom' => $request->input('nom'),
             'prénom' => $request->input('prénom'),
             'email' => $request->input('email'),
             'telephone' => $request->input('telephone'),
             'login' => $request->input('login'),
-            'password' => bcrypt($request->input('password')), // Assurez-vous de hasher le mot de passe
+            'password' => Hash::make($request->input('password')), // Make sure to hash the password
         ]);
 
-        // Attribuer un rôle par défaut à l'utilisateur
-        $defaultRole = Role::where('nom', 'default_role')->first();
+        // Assign a default role to the user
+        $defaultRole = Role::where('name', 'default_role')->first();
 
         if ($defaultRole) {
             $user->roles()->attach($defaultRole);
@@ -71,7 +72,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        // Récupérer tous les rôles pour passer à la vue
+        // Retrieve all roles to pass to the view
         $roles = Role::all();
 
         return view('users.edit', compact('user', 'roles'));
@@ -91,7 +92,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]+$/',
         ]);
 
-        // Mettre à jour les informations de l'utilisateur
+        // Update user information
         $user->update([
             'nom' => $request->input('nom'),
             'prénom' => $request->input('prénom'),
@@ -100,19 +101,23 @@ class UserController extends Controller
             'login' => $request->input('login'),
         ]);
 
-        // Vérifier si un nouveau mot de passe est fourni
+        // Check if a new password is provided
         if ($request->has('password')) {
             $user->update([
-                'password' => bcrypt($request->input('password')),
+                'password' => Hash::make($request->input('password')),
             ]);
         }
 
-        // Mettre à jour les rôles de l'utilisateur
+        // Update user roles
         $user->roles()->sync($request->input('roles'));
 
         return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès!');
     }
 
+    public function show(User $user)
+    {
+        return view('users.show', compact('user'));
+    }
     /**
      * Remove the specified resource from storage.
      */

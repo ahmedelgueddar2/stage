@@ -9,7 +9,7 @@
     @method('PUT')
     <div class="form-group">
         <label for="nom">Nom:</label>
-        <input type="text" class="form-control" id="nom" name="nom" value="{{ $permission->nom }}" required>
+        <input type="text" class="form-control" id="nom" name="nom" value="{{ $permission->name }}" required>
     </div>
     <div class="form-group">
         <label for="description">Description:</label>

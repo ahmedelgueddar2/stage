@@ -21,7 +21,7 @@
         @foreach($permissions as $permission)
         <tr>
             <td>{{ $loop->index + 1 }}</td>
-            <td>{{ $permission->nom }}</td>
+            <td>{{ $permission->name }}</td>
             <td>{{ $permission->description }}</td>
             <td>
                 <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-dark">Modifier</a>

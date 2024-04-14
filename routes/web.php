@@ -5,10 +5,18 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AuthController;
 
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::resource('users', UserController::class)->except(['show']);
+
+
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Resourceful routes for user management

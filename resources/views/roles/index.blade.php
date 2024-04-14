@@ -21,7 +21,7 @@
         @foreach($roles as $role)
         <tr>
             <td>{{ $loop->index + 1 }}</td>
-            <td>{{ $role->nom }}</td>
+            <td>{{ $role->name }}</td>
             <td>{{ $role->description }}</td>
             <td>
                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-sm btn-dark">Modifier</a>
