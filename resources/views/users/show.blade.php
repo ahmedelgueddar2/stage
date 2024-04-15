@@ -32,7 +32,7 @@
                     <th scope="row">Rôle(s)</th>
                     <td>
                         
-                            {{ $role->name }}
+                           
                         
                     </td>
                 </tr>

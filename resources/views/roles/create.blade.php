@@ -7,8 +7,8 @@
 <form action="{{ route('roles.store') }}" method="POST">
     @csrf
     <div class="form-group">
-        <label for="nom">Nom:</label>
-        <input type="text" class="form-control" id="nom" name="nom" required>
+        <label for="name">Nom:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
     </div>
     <div class="form-group">
         <label for="description">Description:</label>
