@@ -2,7 +2,10 @@
 
 @section('content')
 
+
 <h3>Show User</h3>
+
+
 
 <div class="row">
     <div class="col-sm-12">
